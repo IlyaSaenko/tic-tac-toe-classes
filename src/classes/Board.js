@@ -1,5 +1,3 @@
-
-
 export default class Board {
   constructor(boardContainer) {
     this.boardContainer = boardContainer;
@@ -7,7 +5,7 @@ export default class Board {
     this.cells = [];
   }
 
-  create(onClickCell) {
+  create(onCellClick) {
     this.boardContainer.innerHTML = '';
     this.state = Array(9).fill('');
     this.cells = [];
@@ -16,7 +14,7 @@ export default class Board {
       const cell = document.createElement('div');
       cell.classList.add('cell');
       cell.dataset.index = i;
-      cell.addEventListener('click', () => onClickCell(i), { once: true });
+      cell.addEventListener('click', () => onCellClick(i), { once: true });
 
       this.boardContainer.appendChild(cell);
       this.cells.push(cell);
@@ -32,7 +30,7 @@ setMarker(index, marker) {
   cell.classList.add(marker);
 }
 
-isBoardFull() {
+isFull() {
   return this.state.every(v => v !== '');
 }
 
@@ -70,7 +68,7 @@ checkWin(marker) {
 highlightWinningCells(pattern) {
   if (!pattern) return;
 
-  pattern.forEach(i => this.state[i]?.classList.add('win'));
+  pattern.forEach(i => this.cells[i]?.classList.add('win'));
   //... ?. — опциональная цепочка, значит: «если слева не null/undefined — сделай то, что справа, иначе ничего не делай».
 }
 }
