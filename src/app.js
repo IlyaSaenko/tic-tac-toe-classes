@@ -1,6 +1,6 @@
-import Player from "./classes/Player";
-import Board from "./classes/Board";
-import Game from "./classes/Game";
+import Player from "./classes/Player.js";
+import Board from "./classes/Board.js";
+import Game from "./classes/Game.js";
 
 const playerNameInput = document.getElementById('player-name');
 const markX = document.getElementById('mark-x');
@@ -16,8 +16,17 @@ let game = null;
 
 const startGame = () => {
   const playerName = playerNameInput.value.trim() || 'Игрок';
+  let playerMarker;
+  
+  if (markX.checked) {
+    playerMarker = "X";
+  } else if (markO.checked) {
+    playerMarker = 'O';
+  } else {
+    playerMarker = 'X';
+    markX.checked = true;
+  }
 
-  const playerMarker = markX.checked ? 'X' : 'O';
   const computerMarker = playerMarker === 'X' ? 'O' : 'X';
 
   game = new Game(playerName, playerMarker, computerMarker, boardContainer, currentTurn);

@@ -1,20 +1,29 @@
-import Board from "./Board";
-import Player from "./Player";
+import Board from "./Board.js";
+import Player from "./Player.js";
 
 export default class Game {
-  constructor(boardContainer, currentTurnElement) {
+  constructor(playerName, playerMarker, computerMarker, boardContainer, currentTurnElement) {
     this.board = new Board(boardContainer);
+    this.player = new Player(playerName, playerMarker)
+    this.computer = new Player('Компьютер', computerMarker);
     this.currentTurnElement = currentTurnElement;
-    this.currentPlayer = 'X';
+    this.currentPlayer = this.player;
     this.isGameOver = false;
   }
 
   start() {
     this.isGameOver = false;
-    this.currentPlayer = 'X';
+    this.board.create(i => this.handleCellClick(i));
+
+    // Правильное определение, кто ходит первым
+    this.currentPlayer = this.player.marker === 'X' ? this.player : this.computer;
     this.updateTurnText();
 
-    this.board.create(i => this.handleCellClick(i));
+    // Если первым ходит компьютер, запускаем его ход
+    if (this.currentPlayer === this.computer) {
+      this.currentTurnElement.textContent = 'Компьютер думает...';
+      setTimeout(() => this.handleComputerMove(), 1000);
+    }
   }
 
   updateTurnText() {
@@ -26,6 +35,10 @@ export default class Game {
   }
 
   setPlayers(playerName, playerMarker) {
+    if (playerMarker !== 'X' && playerMarker !== 'O') {
+      playerMarker = 'X';
+    }
+    
     const computerMarker = playerMarker === 'X' ? 'O' : 'X';
 
     this.player = new Player(playerName, playerMarker);
@@ -38,6 +51,8 @@ export default class Game {
 
   handleCellClick(index) {
     if (this.isGameOver) return;
+    if (this.currentPlayer === this.computer) return;
+    if (this.board.state[index] !== '') return;
 
     this.board.setMarker(index, this.currentPlayer.marker);
 
@@ -116,7 +131,7 @@ export default class Game {
     }
 
     if (this.board.isFull()) {
-      this.currentTurnElement.textContent = 'Ничья 🤝'; 
+      this.currentTurnElement.textContent = 'Ничья 🤝';
       this.board.disable();
       this.isGameOver = true;
       return;
