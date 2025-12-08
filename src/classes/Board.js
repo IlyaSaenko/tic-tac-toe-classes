@@ -69,6 +69,5 @@ highlightWinningCells(pattern) {
   if (!pattern) return;
 
   pattern.forEach(i => this.cells[i]?.classList.add('win'));
-  //... ?. — опциональная цепочка, значит: «если слева не null/undefined — сделай то, что справа, иначе ничего не делай».
 }
 }

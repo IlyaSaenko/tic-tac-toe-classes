@@ -15,11 +15,9 @@ export default class Game {
     this.isGameOver = false;
     this.board.create(i => this.handleCellClick(i));
 
-    // Правильное определение, кто ходит первым
     this.currentPlayer = this.player.marker === 'X' ? this.player : this.computer;
     this.updateTurnText();
 
-    // Если первым ходит компьютер, запускаем его ход
     if (this.currentPlayer === this.computer) {
       this.currentTurnElement.textContent = 'Компьютер думает...';
       setTimeout(() => this.handleComputerMove(), 1000);
@@ -38,7 +36,7 @@ export default class Game {
     if (playerMarker !== 'X' && playerMarker !== 'O') {
       playerMarker = 'X';
     }
-    
+
     const computerMarker = playerMarker === 'X' ? 'O' : 'X';
 
     this.player = new Player(playerName, playerMarker);
